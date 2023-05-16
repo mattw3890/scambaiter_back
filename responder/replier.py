@@ -4,9 +4,10 @@ import re
 from abc import ABC, abstractmethod
 
 from text_utils.text_filter import *
-from .gen import gen_text
+from .Chatgpt_Replier import gen_text1, gen_text2
+# from .gen import gen_text
 from .classifier import classify
-from secret import NEO_ENRON_PATH, NEO_RAW_PATH, MAIL_ARCHIVE_DIR, TEMPLATES_DIR
+from secret import MAIL_ARCHIVE_DIR, TEMPLATES_DIR # NEO_ENRON_PATH, NEO_RAW_PATH,
 
 text_filters = [
     RemoveSymbolLineTextFilter(),
@@ -47,21 +48,21 @@ class Replier(ABC):
         return self.get_reply(content + "\n[bait_start]\n")
 
 
-class NeoEnronReplier(Replier):
-    name = "NeoEnron"
-
-    def _gen_text(self, prompt) -> str:
-        print(f"Generating reply using {self.name}")
-        return gen_text(NEO_ENRON_PATH, prompt)
-
-
-class NeoRawReplier(Replier):
-    name = "NeoRaw"
-
-    def _gen_text(self, prompt) -> str:
-        print(f"Generating reply using {self.name}")
-        return gen_text(NEO_RAW_PATH, prompt)
-
+# class NeoEnronReplier(Replier):
+#     name = "NeoEnron"
+#
+#     def _gen_text(self, prompt) -> str:
+#         print(f"Generating reply using {self.name}")
+#         return gen_text(NEO_ENRON_PATH, prompt)
+#
+#
+# class NeoRawReplier(Replier):
+#     name = "NeoRaw"
+#
+#     def _gen_text(self, prompt) -> str:
+#         print(f"Generating reply using {self.name}")
+#         return gen_text(NEO_RAW_PATH, prompt)
+#
 
 class ClassifierReplier(Replier):
     name = "Classifier"
@@ -87,4 +88,22 @@ class TemplateReplier(Replier):
         with open(os.path.join(template_dir, target_filename), "r", encoding="utf8") as f:
             res = f.read()
 
+        return res + "[bait_end]"
+
+class ChatReplier1(Replier):
+    name = "Chat1"
+
+    def _gen_text(self,prompt) -> str:
+        print(f"Generating reply using {self.name}")
+        res = gen_text1(prompt)
+        return res + "[bait_end]"
+
+
+
+class ChatReplier2(Replier):
+    name = "Chat2"
+
+    def _gen_text(self,prompt) -> str:
+        print(f"Generating reply using {self.name}")
+        res = gen_text2(prompt)
         return res + "[bait_end]"
