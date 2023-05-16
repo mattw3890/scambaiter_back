@@ -7,7 +7,7 @@ from requests import session
 from langdetect import detect, LangDetectException
 import re
 
-from secret import MAIL_SAVE_DIR, CRAWLER_PROG_DIR, MAX_PAGE
+from secret import MAIL_SAVE_DIR, CRAWLER_PROG_DIR, MAX_PAGE_SL
 
 URL = "http://scamletters.info/category/scam/page/__page__"
 
@@ -105,7 +105,7 @@ def get_body(info):
 def fetch():
     # print("Start to fetch scamletter.info")
     final_info_list = []
-    for i in range(1, MAX_PAGE + 1):
+    for i in range(1, MAX_PAGE_SL + 1):
         # print(f"Fetching page {i}")
         early_stop, info_list = get_info_list(i)
         final_info_list.extend(info_list)

@@ -9,7 +9,7 @@ from langdetect import detect, LangDetectException
 from collections import namedtuple
 import re
 
-from secret import MAIL_SAVE_DIR, CRAWLER_PROG_DIR, MAX_PAGE
+from secret import MAIL_SAVE_DIR, CRAWLER_PROG_DIR, MAX_PAGE_SS
 
 URL = "https://www.scamsurvivors.com/forum/viewforum.php?f=6"
 BASE_URL = "https://www.scamsurvivors.com/forum/"
@@ -49,7 +49,7 @@ def fetch():
     except ValueError:
         total_page = 1
 
-    total_page = min(MAX_PAGE, total_page)
+    total_page = min(MAX_PAGE_SS, total_page)
 
     page_count = 1
     topic_list = []
