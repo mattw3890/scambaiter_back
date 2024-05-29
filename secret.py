@@ -13,6 +13,7 @@ OPENAI_API_KEY = ""
 FILENAME1 = "./data/eliza_dane_green_days.json"
 FILENAME2 = "./data/tushie-blessing.json"
 FILENAME3 = "./data/noogie_california_dreamin.json"
+FAKEDATADIR = "./data/fakeData"
 TEMPLATES_DIR = "./responder/templates"
 # CRAWLER CONF
 CRAWLER_PROG_DIR = "./cache" # has crawled cache

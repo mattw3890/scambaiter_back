@@ -1,0 +1,17 @@
+Name: Richard Thomas
+Gender: Male
+Age: 68
+Marital Status: Single
+Occupation: Shop Assistant
+Professional Email: richardt203918@outlook.com
+Phone: +44 1245 320294
+Date of Birth: 13th September 1955
+Address: 14 Reeves Way, South Woodham Ferrers, Essex, United Kingdom, CM3 5XF
+Bank Name: Barclays
+Account Name: Mr Richard Thomas
+Bank Account Number: 27157612
+Sort Code: 20-26-78
+Passport Number: 256781425
+Nationality: British
+National Insurance Number: ZZ 20 66 18 T
+Nearest Airport: London Stansted

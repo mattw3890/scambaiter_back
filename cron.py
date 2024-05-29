@@ -4,6 +4,7 @@ import shutil
 import sys
 import traceback
 
+import datetime
 import crawler
 import tiktoken
 import mailgun
@@ -13,9 +14,11 @@ from secret import MAIL_SAVE_DIR, MAIL_HANDLED_DIR
 from archiver import archive
 
 
-def main(crawl=True):
-    if crawl:
-        crawler.fetch_all()
+def main(crawl):
+    print("\n\nRunning cron at: " + str(datetime.datetime.now()) + "\n\n")
+    if crawl == True:
+       print("\n\nRunning Crawler\n\n")
+       crawler.fetch_all()
 
     # Handle incoming emails
 
@@ -44,6 +47,7 @@ def main(crawl=True):
                     subject = "Re: " + subject
                 scam_email = email_obj["from"]
 
+
                 if "bait_email" not in email_obj:
                     # Email just crawled
 
@@ -52,10 +56,9 @@ def main(crawl=True):
                         os.remove(email_path)
                         continue
                         # pass
-
+                    
+                    print("This email is just crawled, using random replier.")
                     archive(True, scam_email, "CRAWLER", email_obj["title"], text)
-
-                    print("This email is just crawled, using random replier")
                     replier = responder.get_replier_randomly()
                     bait_email = solution_manager.gen_new_addr(scam_email, replier.name)
                     stored_info = solution_manager.get_stored_info(bait_email, scam_email)
@@ -69,7 +72,10 @@ def main(crawl=True):
                         continue
 
                     print(f"Found selected replier {stored_info.sol}")
+
+
                     replier = responder.get_replier_by_name(stored_info.sol)
+
                     if replier is None:
                         print("Replier Sol_name not found")
                         os.remove(email_path)
@@ -77,9 +83,19 @@ def main(crawl=True):
 
                 try:
                     if replier.name == "Classifier":
-                        res_text = replier.get_reply_by_his(scam_email)
+                        res_text = replier.get_reply_by_his(scam_email, False)
+                        prohibitedWords = [" language model ", " ai ", " scam ", " police ", " law "]
+                        i=0
+                        while (any(word in res_text.lower() for word in prohibitedWords) and (i<10)):
+                            i=i+1
+                            res_text = replier.get_reply_by_his(scam_email, True)
                     else:
-                        res_text = replier.get_reply(text)
+                        res_text = replier.get_reply(text, False)
+                        prohibitedWords = [" language model ", " ai ", " scam ", " police ", " law "]
+                        i=0
+                        while (any(word in res_text.lower() for word in prohibitedWords) and (i<10)):
+                            i=i+1
+                            res_text = replier.get_reply(text, True)
                 except Exception as e:
                     print("GENERATING ERROR")
                     print(e)
@@ -109,7 +125,6 @@ def main(crawl=True):
 
 
 if __name__ == '__main__':
-
     if os.path.exists("./lock"):
         quit(-1)
 
@@ -120,5 +135,3 @@ if __name__ == '__main__':
     main(crawl=arg_crawl)
 
     os.remove("./lock")
-
-# main()
